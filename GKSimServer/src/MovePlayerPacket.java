@@ -5,12 +5,20 @@ import java.util.UUID;
 
 public class MovePlayerPacket implements Packet
 {
+    public static final int IDLE = 0;
+    public static final int MOVING_RIGHT = 1;
+    public static final int MOVING_LEFT = 2;
+    public static final int MOVING_UP = 3;
+    public static final int MOVING_DOWN = 4;
+
     private UUID uuid;
     private int x, y;
+    private int movementType;
 
-    public MovePlayerPacket(UUID uuid, int x, int y)
+    public MovePlayerPacket(UUID uuid, int movementType, int x, int y)
     {
         this.uuid = uuid;
+        this.movementType = movementType;
         this.x = x;
         this.y = y;
     }
@@ -18,6 +26,11 @@ public class MovePlayerPacket implements Packet
     public MovePlayerPacket(DataInputStream in)
     {
         read(in);
+    }
+
+    public int getMovementType()
+    {
+        return movementType;
     }
 
     public UUID getUUID()
@@ -41,6 +54,7 @@ public class MovePlayerPacket implements Packet
         try
         {
             this.uuid = UUID.fromString(in.readUTF());
+            this.movementType = in.readInt();
             this.x = in.readInt();
             this.y = in.readInt();
         }
@@ -57,6 +71,7 @@ public class MovePlayerPacket implements Packet
         {
             out.writeInt(Packet.MOVE_PLAYER_PACKET_ID);
             out.writeUTF(uuid.toString());
+            out.writeInt(movementType);
             out.writeInt(x);
             out.writeInt(y);
             out.flush();
@@ -69,6 +84,6 @@ public class MovePlayerPacket implements Packet
 
     public String toString()
     {
-        return "MovePlayerPacket(uuid: " + uuid  + ", x:" + x + ", y:" + y + ")";
+        return "MovePlayerPacket(uuid: " + uuid + ", movement_type: " + movementType + ", x:" + x + ", y:" + y + ")";
     }
 }

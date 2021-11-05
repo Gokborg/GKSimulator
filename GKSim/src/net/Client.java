@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.UUID;
 
 public class Client extends Thread
 {
@@ -101,6 +100,16 @@ public class Client extends Thread
                 {
                     MovePlayerPacket movePlayerPacket = (MovePlayerPacket) packet;
                     Player player = (Player) game.getScene().getGameObject(movePlayerPacket.getUUID());
+                    switch(movePlayerPacket.getMovementType())
+                    {
+                        case MovePlayerPacket.MOVING_LEFT: player.setAnimation("Left"); break;
+                        case MovePlayerPacket.MOVING_RIGHT: player.setAnimation("Right"); break;
+
+                        case MovePlayerPacket.IDLE:
+                        case MovePlayerPacket.MOVING_UP:
+                        case MovePlayerPacket.MOVING_DOWN:
+                            player.setAnimation("Idle");
+                    }
                     player.setX(movePlayerPacket.getX());
                     player.setY(movePlayerPacket.getY());
                 }
@@ -108,11 +117,11 @@ public class Client extends Thread
         }
     }
 
-    public void sendPlayerMovePacket(Player player)
+    public void sendPlayerMovePacket(Player player, int movementType)
     {
         if(connected)
         {
-            new MovePlayerPacket(player.getUUID(), player.getX(), player.getY()).write(out);
+            new MovePlayerPacket(player.getUUID(), movementType, player.getX(), player.getY()).write(out);
         }
     }
 

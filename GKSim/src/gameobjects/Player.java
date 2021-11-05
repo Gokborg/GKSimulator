@@ -1,35 +1,43 @@
 package gameobjects;
 
 import core.*;
+import net.packets.MovePlayerPacket;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Player extends GameObject
 {
     private String name;
     private boolean isLocalPlayer;
+    private boolean sendIdlePacket;
 
-    private Animation idleAnimation;
-    private Animation runLeftAnimation;
-    private Animation runRightAnimation;
-    private Animation current;
+    private Map<String, Animation> animationMap;
+    private Animation currentAnimation;
 
     public Player(Game game, UUID uuid, String name, int x, int y, boolean isLocalPlayer)
     {
         super(game, uuid, x, y);
         this.isLocalPlayer = isLocalPlayer;
         this.name = name;
-        idleAnimation = new Animation(200, Asset.PLAYER_IDLE);
-        runLeftAnimation = new Animation(50, Asset.PLAYER_RUN_LEFT);
-        runRightAnimation = new Animation(50, Asset.PLAYER_RUN_RIGHT);
-        current = idleAnimation;
+        animationMap = new HashMap<>();
+        animationMap.put("Idle", new Animation(200, Asset.PLAYER_IDLE));
+        animationMap.put("Left", new Animation(50, Asset.PLAYER_RUN_LEFT));
+        animationMap.put("Right", new Animation(50, Asset.PLAYER_RUN_RIGHT));
+        currentAnimation = animationMap.get("Idle");
     }
 
     public String getName()
     {
         return name;
+    }
+
+    public void setAnimation(String animation)
+    {
+        currentAnimation = animationMap.get(animation);
     }
 
     @Override
@@ -39,39 +47,54 @@ public class Player extends GameObject
         {
             updateMovement();
         }
+        currentAnimation.update();
     }
 
     public void updateMovement()
     {
-        current = idleAnimation;
+        if (
+                !game.getInput().isPressed(KeyEvent.VK_D) &&
+                !game.getInput().isPressed(KeyEvent.VK_A) &&
+                !game.getInput().isPressed(KeyEvent.VK_W) &&
+                !game.getInput().isPressed(KeyEvent.VK_S) &&
+                sendIdlePacket)
+        {
+            currentAnimation = animationMap.get("Idle");
+            game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.IDLE);
+            sendIdlePacket = false;
+        }
         if(game.getInput().isPressed(KeyEvent.VK_D))
         {
             x += 5;
-            current = runRightAnimation;
-            game.getClient().sendPlayerMovePacket(this);
+            currentAnimation = animationMap.get("Right");
+            game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_RIGHT);
+            sendIdlePacket = true;
         }
         if(game.getInput().isPressed(KeyEvent.VK_A))
         {
             x -= 5;
-            current = runLeftAnimation;
-            game.getClient().sendPlayerMovePacket(this);
+            currentAnimation = animationMap.get("Left");
+            game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_LEFT);
+            sendIdlePacket = true;
         }
         if(game.getInput().isPressed(KeyEvent.VK_W))
         {
             y -= 5;
-            game.getClient().sendPlayerMovePacket(this);
+            currentAnimation = animationMap.get("Right");
+            game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_UP);
+            sendIdlePacket = true;
         }
         if(game.getInput().isPressed(KeyEvent.VK_S))
         {
             y += 5;
-            game.getClient().sendPlayerMovePacket(this);
+            game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_DOWN);
+            sendIdlePacket = true;
         }
-        current.update();
     }
 
     public void render(Drawer drawer)
     {
         drawer.drawText(name, Color.WHITE, Asset.DEFAULT_FONT, x+20, y+35);
-        drawer.drawImage(current.getFrame(), x, y);
+        drawer.drawImage(currentAnimation.getFrame(), x, y);
     }
 }

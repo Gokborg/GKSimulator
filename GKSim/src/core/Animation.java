@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 public class Animation
 {
-    private int frame;
     private long msPerFrame;
     private BufferedImage[] images;
     private int frameNumber;
