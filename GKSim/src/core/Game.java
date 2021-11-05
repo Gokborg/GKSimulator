@@ -33,7 +33,6 @@ public class Game
         client = new Client(this);
 
         scene = new Scene(new Player(this, UUID.randomUUID(), UUID.randomUUID().toString().substring(0,5), 0, 0, true));
-        scene.add(new Player(this, UUID.randomUUID(), UUID.randomUUID().toString().substring(0,5), 0, 0, false));
         gameLoop = new GameLoop(this);
         gameLoop.start();
 
