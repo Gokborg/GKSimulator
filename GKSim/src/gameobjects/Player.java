@@ -28,6 +28,7 @@ public class Player extends GameObject
         animationMap.put("Left", new Animation(50, Asset.PLAYER_RUN_LEFT));
         animationMap.put("Right", new Animation(50, Asset.PLAYER_RUN_RIGHT));
         currentAnimation = animationMap.get("Idle");
+        image = currentAnimation.getFrame();
     }
 
     public String getName()
@@ -80,7 +81,6 @@ public class Player extends GameObject
         if(game.getInput().isPressed(KeyEvent.VK_W))
         {
             y -= 5;
-            currentAnimation = animationMap.get("Right");
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_UP);
             sendIdlePacket = true;
         }
@@ -90,11 +90,13 @@ public class Player extends GameObject
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_DOWN);
             sendIdlePacket = true;
         }
+        image = currentAnimation.getFrame();
     }
 
     public void render(Drawer drawer)
     {
-        drawer.drawText(name, Color.WHITE, Asset.DEFAULT_FONT, x+20, y+35);
-        drawer.drawImage(currentAnimation.getFrame(), x, y);
+        drawer.drawText(name, Color.WHITE, Asset.DEFAULT_FONT, x, y-10);
+        drawer.drawText("(" + x + "," + y + ")", Color.RED, Asset.DEFAULT_FONT, x, y);
+        drawer.drawImage(image, x, y);
     }
 }

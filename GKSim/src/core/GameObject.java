@@ -1,11 +1,13 @@
 package core;
 
+import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public abstract class GameObject
 {
     protected Game game;
     protected int x, y;
+    protected BufferedImage image;
     protected UUID uuid;
 
     public GameObject(Game game, UUID uuid, int x, int y)
@@ -14,6 +16,17 @@ public abstract class GameObject
         this.x = x;
         this.y = y;
         this.uuid = uuid;
+        this.image = Asset.MISSING_IMAGE;
+    }
+
+    public void setImage(BufferedImage image)
+    {
+        this.image = image;
+    }
+
+    public BufferedImage getImage()
+    {
+        return image;
     }
 
     public void setUUID(UUID uuid)

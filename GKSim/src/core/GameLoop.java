@@ -17,8 +17,8 @@ public class GameLoop extends Thread
     {
         running = true;
         long initialTime = System.nanoTime();
-        final double timeU = 1000000000 / 60;
-        final double timeF = 1000000000 / 60;
+        final double timeU = 1000000000 / Game.UPS;
+        final double timeF = 1000000000 / Game.FPS;
         double deltaU = 0, deltaF = 0;
         int frames = 0, ticks = 0;
         long timer = System.currentTimeMillis();
