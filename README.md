@@ -2,6 +2,8 @@
 
 A toy 2D game to learn some game development and networking
 
+My Discord: Nyoom#9922
+
 Resources:
 https://deadrevolver.itch.io/pixel-prototype-player-sprites?download
 
