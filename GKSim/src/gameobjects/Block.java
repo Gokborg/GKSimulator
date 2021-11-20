@@ -1,6 +1,5 @@
 package gameobjects;
 
-import core.BlockType;
 import core.Game;
 import core.GameObject;
 

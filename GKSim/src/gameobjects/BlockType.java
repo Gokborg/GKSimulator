@@ -1,4 +1,4 @@
-package core;
+package gameobjects;
 
 public enum BlockType
 {

@@ -1,22 +1,11 @@
 # Default ignored files
 /shelf/
-GKSim/.idea/workspace.xml
-GKSim/.idea/misc.xml
-GKSim/.idea/modules.xml
-GKSim/.idea/runConfigurations.xml
-GKSim/.idea/uiDesigner.xml
-GKSim/.idea/.gitignore
-GKSim/.idea/artifacts
+GKSim/.idea/
 GKSim/src/META-INF
 GKSim/out/
 GKSim/GKSim.iml
 
-GKSimServer/.idea/workspace.xml
-GKSimServer/.idea/misc.xml
-GKSimServer/.idea/modules.xml
-GKSimServer/.idea/runConfigurations.xml
-GKSimServer/.idea/uiDesigner.xml
-GKSimServer/.idea/.gitignore
+GKSimServer/.idea/
 GKSimServer/out/
 GKSimServer/GKSimServer.iml
 

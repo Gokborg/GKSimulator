@@ -3,7 +3,10 @@ package core;
 import gameobjects.Cursor;
 import gameobjects.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Scene

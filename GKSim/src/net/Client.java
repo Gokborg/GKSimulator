@@ -1,9 +1,9 @@
 package net;
 
-import core.BlockType;
 import core.Game;
 import core.GameObject;
 import gameobjects.Block;
+import gameobjects.BlockType;
 import gameobjects.Player;
 import gameobjects.Wire;
 import net.packets.BlockActionPacket;

@@ -1,10 +1,8 @@
 package gameobjects;
 
 import core.Asset;
-import core.BlockType;
-import core.rendering.Drawer;
-import core.rendering.SwingDrawer;
 import core.Game;
+import core.rendering.Drawer;
 
 import java.awt.*;
 import java.util.UUID;

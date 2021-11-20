@@ -1,7 +1,5 @@
 package core.rendering;
 
-import gameobjects.Block;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

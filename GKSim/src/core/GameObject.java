@@ -1,7 +1,6 @@
 package core;
 
 import core.rendering.Drawer;
-import core.rendering.SwingDrawer;
 
 import java.awt.image.BufferedImage;
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package core;
 
 import core.rendering.Display;
-import core.rendering.JOGLDisplay;
 import core.rendering.SwingDisplay;
 import gameobjects.Cursor;
 import gameobjects.Player;

@@ -2,7 +2,6 @@ package core;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener
 {

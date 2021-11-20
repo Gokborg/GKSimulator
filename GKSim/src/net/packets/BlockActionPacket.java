@@ -1,11 +1,10 @@
 package net.packets;
 
-import core.BlockType;
+import gameobjects.BlockType;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 public class BlockActionPacket implements Packet
 {
