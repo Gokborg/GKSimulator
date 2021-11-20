@@ -22,6 +22,8 @@ public class Display extends JFrame
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(game.WIDTH, game.HEIGHT));
         canvas.setFocusable(false);
+        canvas.addMouseListener(game.getInput());
+        canvas.addMouseMotionListener(game.getInput());
         add(canvas);
 
         pack();
@@ -38,11 +40,6 @@ public class Display extends JFrame
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        //Center the camera on the player
-        Player player = game.getScene().getPlayer();
-        game.getCamera().setX(player.getX() - getWidth()/2.0 + player.getImage().getWidth()/2);
-        game.getCamera().setY(player.getY() - getHeight()/2.0 + player.getImage().getHeight()/2);
-
         for(GameObject gameObject : game.getScene().getGameObjects())
         {
             gameObject.render(drawer);
@@ -51,6 +48,9 @@ public class Display extends JFrame
             //graphics2D.setColor(Color.GREEN);
             //graphics2D.drawRect(gameObject.getX(), gameObject.getY(), gameObject.getImage().getWidth(), gameObject.getImage().getHeight());
         }
+
+        game.getScene().getPlayer().render(drawer);
+        game.getScene().getCursor().render(drawer);
 
         graphics2D.dispose();
         bs.show();

@@ -7,6 +7,7 @@ public interface Packet
 {
     public static final int NEW_PLAYER_PACKET_ID = 0;
     public static final int MOVE_PLAYER_PACKET_ID = 1;
+    public static final int BLOCK_ACTION_PACKET_ID = 2;
 
     public void read(DataInputStream in);
     public void write(DataOutputStream out);

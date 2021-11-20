@@ -1,16 +1,17 @@
 package core;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public abstract class GameObject
 {
     protected Game game;
-    protected int x, y;
+    protected double x, y;
     protected BufferedImage image;
     protected UUID uuid;
 
-    public GameObject(Game game, UUID uuid, int x, int y)
+    public GameObject(Game game, UUID uuid, double x, double y)
     {
         this.game = game;
         this.x = x;
@@ -39,22 +40,22 @@ public abstract class GameObject
         return uuid;
     }
 
-    public void setX(int x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
-    public void setY(int y)
+    public void setY(double y)
     {
         this.y = y;
     }
 
-    public int getY()
+    public double getY()
     {
         return y;
     }

@@ -7,9 +7,9 @@ public class NewPlayerPacket implements Packet
 {
     private UUID uuid;
     private String name;
-    private int x, y;
+    private double x, y;
 
-    public NewPlayerPacket(UUID uuid, String name, int x, int y)
+    public NewPlayerPacket(UUID uuid, String name, double x, double y)
     {
         this.uuid = uuid;
         this.name = name;
@@ -29,8 +29,8 @@ public class NewPlayerPacket implements Packet
         {
             this.uuid = UUID.fromString(in.readUTF());
             this.name = in.readUTF();
-            this.x = in.readInt();
-            this.y = in.readInt();
+            this.x = in.readDouble();
+            this.y = in.readDouble();
         }
         catch(IOException e)
         {
@@ -46,8 +46,8 @@ public class NewPlayerPacket implements Packet
             out.writeInt(Packet.NEW_PLAYER_PACKET_ID);
             out.writeUTF(uuid.toString());
             out.writeUTF(name);
-            out.writeInt(x);
-            out.writeInt(y);
+            out.writeDouble(x);
+            out.writeDouble(y);
             out.flush();
         }
         catch (IOException e)
@@ -66,12 +66,12 @@ public class NewPlayerPacket implements Packet
         return name;
     }
 
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
-    public int getY()
+    public double getY()
     {
         return y;
     }

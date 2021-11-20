@@ -1,21 +1,29 @@
 package core;
 
+import gameobjects.Cursor;
 import gameobjects.Player;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Scene
 {
     private List<GameObject> gameObjects;
     private Map<UUID, GameObject> gameObjectMap;
     private Player player;
+    private Cursor cursor;
 
-    public Scene(Player player)
+    public Scene(Player player, Cursor cursor)
     {
-        gameObjects = new ArrayList<>();
+        gameObjects = new CopyOnWriteArrayList<>();
         gameObjectMap = new HashMap<>();
         this.player = player;
-        add(player);
+        this.cursor = cursor;
+    }
+
+    public Cursor getCursor()
+    {
+        return cursor;
     }
 
     public Player getPlayer()
@@ -47,6 +55,8 @@ public class Scene
 
     public void update()
     {
+        player.update();
+        cursor.update();
         gameObjects.forEach(gameObject -> gameObject.update());
     }
 }

@@ -1,10 +1,12 @@
 package gameobjects;
 
 import core.*;
+import net.packets.BlockActionPacket;
 import net.packets.MovePlayerPacket;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +20,7 @@ public class Player extends GameObject
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
 
-    public Player(Game game, UUID uuid, String name, int x, int y, boolean isLocalPlayer)
+    public Player(Game game, UUID uuid, String name, double x, double y, boolean isLocalPlayer)
     {
         super(game, uuid, x, y);
         this.isLocalPlayer = isLocalPlayer;
@@ -46,45 +48,51 @@ public class Player extends GameObject
     {
         if(isLocalPlayer)
         {
+            if(game.getInput().isMouseDown(MouseEvent.BUTTON1))
+            {
+                Wire wire = new Wire(game, UUID.randomUUID(), game.getScene().getCursor().getBlockX(), game.getScene().getCursor().getBlockY());
+                game.getGrid().add(wire);
+                game.getClient().sendBlockActionPacket(wire, BlockActionPacket.ACTION_PLACE);
+            }
             updateMovement();
         }
         currentAnimation.update();
     }
 
-    public void updateMovement()
+    private void updateMovement()
     {
         if (
-                !game.getInput().isPressed(KeyEvent.VK_D) &&
-                !game.getInput().isPressed(KeyEvent.VK_A) &&
-                !game.getInput().isPressed(KeyEvent.VK_W) &&
-                !game.getInput().isPressed(KeyEvent.VK_S) &&
+                !game.getInput().isKeyPressed(KeyEvent.VK_D) &&
+                !game.getInput().isKeyPressed(KeyEvent.VK_A) &&
+                !game.getInput().isKeyPressed(KeyEvent.VK_W) &&
+                !game.getInput().isKeyPressed(KeyEvent.VK_S) &&
                 sendIdlePacket)
         {
             currentAnimation = animationMap.get("Idle");
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.IDLE);
             sendIdlePacket = false;
         }
-        if(game.getInput().isPressed(KeyEvent.VK_D))
+        if(game.getInput().isKeyPressed(KeyEvent.VK_D))
         {
             x += 5;
             currentAnimation = animationMap.get("Right");
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_RIGHT);
             sendIdlePacket = true;
         }
-        if(game.getInput().isPressed(KeyEvent.VK_A))
+        if(game.getInput().isKeyPressed(KeyEvent.VK_A))
         {
             x -= 5;
             currentAnimation = animationMap.get("Left");
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_LEFT);
             sendIdlePacket = true;
         }
-        if(game.getInput().isPressed(KeyEvent.VK_W))
+        if(game.getInput().isKeyPressed(KeyEvent.VK_W))
         {
             y -= 5;
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_UP);
             sendIdlePacket = true;
         }
-        if(game.getInput().isPressed(KeyEvent.VK_S))
+        if(game.getInput().isKeyPressed(KeyEvent.VK_S))
         {
             y += 5;
             game.getClient().sendPlayerMovePacket(this, MovePlayerPacket.MOVING_DOWN);

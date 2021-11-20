@@ -12,10 +12,10 @@ public class MovePlayerPacket implements Packet
     public static final int MOVING_DOWN = 4;
 
     private UUID uuid;
-    private int x, y;
+    private double x, y;
     private int movementType;
 
-    public MovePlayerPacket(UUID uuid, int movementType, int x, int y)
+    public MovePlayerPacket(UUID uuid, int movementType, double x, double y)
     {
         this.uuid = uuid;
         this.movementType = movementType;
@@ -38,12 +38,12 @@ public class MovePlayerPacket implements Packet
         return uuid;
     }
 
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
-    public int getY()
+    public double getY()
     {
         return y;
     }
@@ -55,8 +55,8 @@ public class MovePlayerPacket implements Packet
         {
             this.uuid = UUID.fromString(in.readUTF());
             this.movementType = in.readInt();
-            this.x = in.readInt();
-            this.y = in.readInt();
+            this.x = in.readDouble();
+            this.y = in.readDouble();
         }
         catch(IOException e)
         {
@@ -72,8 +72,8 @@ public class MovePlayerPacket implements Packet
             out.writeInt(Packet.MOVE_PLAYER_PACKET_ID);
             out.writeUTF(uuid.toString());
             out.writeInt(movementType);
-            out.writeInt(x);
-            out.writeInt(y);
+            out.writeDouble(x);
+            out.writeDouble(y);
             out.flush();
         }
         catch (IOException e)

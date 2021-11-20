@@ -1,8 +1,12 @@
 package net;
 
+import core.BlockType;
 import core.Game;
 import core.GameObject;
+import gameobjects.Block;
 import gameobjects.Player;
+import gameobjects.Wire;
+import net.packets.BlockActionPacket;
 import net.packets.MovePlayerPacket;
 import net.packets.NewPlayerPacket;
 import net.packets.Packet;
@@ -11,6 +15,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.UUID;
 
 public class Client extends Thread
 {
@@ -38,6 +43,7 @@ public class Client extends Thread
         catch (IOException e)
         {
             e.printStackTrace();
+            System.out.println("Tried connecting to a local host server, failed to connect, all good!");
         }
     }
 
@@ -63,6 +69,8 @@ public class Client extends Thread
                             packetQueue.add(new NewPlayerPacket(in)); break;
                         case Packet.MOVE_PLAYER_PACKET_ID:
                             packetQueue.add(new MovePlayerPacket(in)); break;
+                        case Packet.BLOCK_ACTION_PACKET_ID:
+                            packetQueue.add(new BlockActionPacket(in)); break;
                     }
                 }
             }
@@ -113,6 +121,26 @@ public class Client extends Thread
                     player.setX(movePlayerPacket.getX());
                     player.setY(movePlayerPacket.getY());
                 }
+                else if(packet instanceof BlockActionPacket)
+                {
+                    BlockActionPacket blockActionPacket = (BlockActionPacket) packet;
+                    switch(blockActionPacket.getAction())
+                    {
+                        case BlockActionPacket.ACTION_PLACE:
+                            if(blockActionPacket.getBlockId() == BlockType.WIRE.ordinal())
+                            {
+                                Wire wire = new Wire(game, UUID.randomUUID(), blockActionPacket.getBlockX(), blockActionPacket.getBlockY());
+                                game.getGrid().add(wire);
+                            }
+                            break;
+
+                        case BlockActionPacket.ACTION_REMOVE:
+                            Block blockToRemove = game.getGrid().getBlock(blockActionPacket.getBlockX(), blockActionPacket.getBlockY());
+                            game.getGrid().remove(blockToRemove);
+                            break;
+
+                    }
+                }
             }
         }
     }
@@ -122,6 +150,14 @@ public class Client extends Thread
         if(connected)
         {
             new MovePlayerPacket(player.getUUID(), movementType, player.getX(), player.getY()).write(out);
+        }
+    }
+
+    public void sendBlockActionPacket(Block block, int action)
+    {
+        if(connected)
+        {
+            new BlockActionPacket(block.getBlockType(), action, block.getBlockX(), block.getBlockY()).write(out);
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 public class Server extends Thread
 {
     private ServerSocket serverSocket;
+    private ServerGrid serverGrid;
     private List<ClientHandler> clientHandlerList;
     private boolean running = false;
     private int port;
@@ -15,6 +16,7 @@ public class Server extends Thread
     {
         this.port = port;
         clientHandlerList = new ArrayList<>();
+        serverGrid = new ServerGrid();
     }
 
     @Override
@@ -40,6 +42,11 @@ public class Server extends Thread
             e.printStackTrace();
         }
         end();
+    }
+
+    public synchronized ServerGrid getServerGrid()
+    {
+        return serverGrid;
     }
 
     public void broadcast(ClientHandler sender, Packet packet)

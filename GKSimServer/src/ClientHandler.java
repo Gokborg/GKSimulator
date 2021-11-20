@@ -1,3 +1,4 @@
+import javax.swing.text.html.HTMLDocument;
 import java.io.*;
 import java.net.Socket;
 
@@ -41,22 +42,35 @@ public class ClientHandler extends Thread
                 if(packetType == Packet.NEW_PLAYER_PACKET_ID)
                 {
                     packet = new NewPlayerPacket(in);
-                    server.broadcast(this, packet);
                 }
                 else if(packetType == Packet.MOVE_PLAYER_PACKET_ID)
                 {
                     packet = new MovePlayerPacket(in);
-                    server.broadcast(this, packet);
                 }
-                if(packet == null)
+                else if(packetType == Packet.BLOCK_ACTION_PACKET_ID)
+                {
+                    BlockActionPacket blockActionPacket = new BlockActionPacket(in);
+                    boolean response = server.getServerGrid().add(new BlockPosition(blockActionPacket.getBlockX(), blockActionPacket.getBlockY()));
+
+                    //If the player places a block on a block that already exists on the server,
+                    //it will send a packet saying to remove the block
+                    if(!response)
+                    {
+                        packet = new BlockActionPacket(blockActionPacket.getBlockId(), BlockActionPacket.ACTION_REMOVE, blockActionPacket.getBlockX(), blockActionPacket.getBlockY());
+                        server.broadcast(this, packet);
+                    }
+                    else
+                    {
+                        packet = blockActionPacket;
+                    }
+                }
+                else if(packet == null)
                 {
                     System.out.println(socket.getInetAddress() + " has sent a faulty packet, disconnecting the user!");
                     end();
                 }
-                else
-                {
-                    System.out.println(socket.getInetAddress() + "> " + packet.toString());
-                }
+                server.broadcast(this, packet);
+                System.out.println(socket.getInetAddress() + "> " + packet.toString());
             }
         }
         catch (IOException e)
