@@ -1,5 +1,8 @@
 package core;
 
+import core.rendering.Display;
+import core.rendering.JOGLDisplay;
+import core.rendering.SwingDisplay;
 import gameobjects.Cursor;
 import gameobjects.Player;
 import gameobjects.Wire;
@@ -29,7 +32,7 @@ public class Game
         asset = new Asset();
         input = new Input(this);
         camera = new Camera(0, 0);
-        display = new Display(this);
+        display = new SwingDisplay(this);
         display.addKeyListener(input);
         client = new Client(this);
         grid = new Grid(this);

@@ -1,7 +1,6 @@
 package gameobjects;
 
 import core.BlockType;
-import core.Drawer;
 import core.Game;
 import core.GameObject;
 

@@ -6,6 +6,8 @@ GKSim/.idea/modules.xml
 GKSim/.idea/runConfigurations.xml
 GKSim/.idea/uiDesigner.xml
 GKSim/.idea/.gitignore
+GKSim/.idea/artifacts
+GKSim/src/META-INF
 GKSim/out/
 GKSim/GKSim.iml
 

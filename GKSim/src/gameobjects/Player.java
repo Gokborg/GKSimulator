@@ -1,6 +1,8 @@
 package gameobjects;
 
 import core.*;
+import core.rendering.Drawer;
+import core.rendering.SwingDrawer;
 import net.packets.BlockActionPacket;
 import net.packets.MovePlayerPacket;
 

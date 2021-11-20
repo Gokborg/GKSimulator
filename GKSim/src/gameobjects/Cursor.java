@@ -2,7 +2,8 @@ package gameobjects;
 
 import core.Asset;
 import core.BlockType;
-import core.Drawer;
+import core.rendering.Drawer;
+import core.rendering.SwingDrawer;
 import core.Game;
 
 import java.awt.*;
